@@ -38,6 +38,6 @@ public class Control02 {
 		// Integer.perseInt(진법으로 바꾼 문자열, ?(몇진법으로 바꿀 것인지?)) 
 		// = 해당문자열의 진법을 정수진법으로 바꾼다.
 	
-		
+		sc.close();
 	}// main끝
 }
