@@ -64,7 +64,7 @@ Scanner sc = new Scanner(System.in);
 		} System.out.println();
 		
 		
-		
+		test
 		sc.close();
 	}
 }
