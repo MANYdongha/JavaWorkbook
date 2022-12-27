@@ -27,3 +27,74 @@ C:\enoviaV6R2021x\server\win_b64\code\bin\enovia.ini		=>	enovia설정
 
 
 2. BackJoon
+3. public class hTestDAO_mxJPO {
+
+    /** A string constant with the value field_display_choices. */
+    protected static final String FIELD_DISPLAY_CHOICES = "field_display_choices";
+
+    /** A string constant with the value field_choices. */
+    protected static final String FIELD_CHOICES = "field_choices";
+
+    static String filePath = "다운로드";
+    static String fileNm = "poi_making_file_test";
+
+    public Map InsertData(Context context, String[] args) throws Exception {
+        System.out.println("들어옴");
+        Map returnMap = new HashMap();
+        try {
+            ContextUtil.startTransaction(context, true);
+            HashMap programMap = (HashMap) JPO.unpackArgs(args);
+
+            String hTestMemberRegProductName = hshStringUtil.nullToEmpty(programMap.get("hTestProductName"));
+            String hTestMemberRegProductTaxonomy = hshStringUtil
+                    .nullToEmpty(programMap.get("hshClassificationAttrDisplay"));
+            String hTestMemberRegUserName = hshStringUtil.nullToEmpty(programMap.get("hTestName"));
+            String hTestMemberRegAge = hshStringUtil.nullToEmpty(programMap.get("hTestAge"));
+            String hTestMemberRegState = hshStringUtil.nullToEmpty(programMap.get("hTestState"));
+            String hTestMemberRegAddress = hshStringUtil.nullToEmpty(programMap.get("hTestAddress"));
+
+            // autoName(Context context, String type, String revision, String policy, String
+            // vault, String customRev, boolean uniqueNameOnly, boolean useSuperUser)
+            String name = FrameworkUtil.autoName(context, "type_hTestMemberReg", null, "policy_hTestMemberReg",
+                    hshConstants.VAULT_ESERVICE_PRODUCTION, null, true, true);
+
+            DomainObject newObject = DomainObject.newInstance(context);
+            newObject.createObject(context, "hTestMemberReg", name, "-", "hTestMemberReg",
+                    hshConstants.VAULT_ESERVICE_PRODUCTION);
+
+//            newObject.getAttributeMap(context);
+
+//            int size = newObject.getAttributeMap(context).size();
+//            
+//            for(int i=0; i<size; i++) {
+//                if (newObject.getAttributeMap(context).containsKey("hTestProductName")) {
+//                    attrMap.put(hshAttributeConstants.ATTRIBUTE_HTESTMEMBERREGPRODUCTTAXONOMY, hTestMemberRegProductTaxonomy);
+//                    
+//                }
+//                
+//            }
+//            
+
+            Map attrMap = new HashMap();
+
+            attrMap.put(hshAttributeConstants.ATTRIBUTE_HTESTMEMBERREGUSERNAME, hTestMemberRegUserName);
+            attrMap.put(hshAttributeConstants.ATTRIBUTE_HTESTMEMBERREGAGE, hTestMemberRegAge);
+            attrMap.put(hshAttributeConstants.ATTRIBUTE_HTESTMEMBERREGSTATE, hTestMemberRegState);
+            attrMap.put(hshAttributeConstants.ATTRIBUTE_HTESTMEMBERREGADDRESS, hTestMemberRegAddress);
+            attrMap.put(hshAttributeConstants.ATTRIBUTE_HTESTMEMBERREGPRODUCTNAME, hTestMemberRegProductName);
+            attrMap.put(hshAttributeConstants.ATTRIBUTE_HTESTMEMBERREGPRODUCTTAXONOMY, hTestMemberRegProductTaxonomy);
+
+            newObject.setAttributeValues(context, attrMap);
+
+            String objectId = newObject.getId();
+
+            returnMap.put(DomainConstants.SELECT_ID, objectId);
+            ContextUtil.commitTransaction(context);
+        } catch (Exception e) {
+           
+            ContextUtil.abortTransaction(context);
+            e.printStackTrace();
+            throw e;
+        }
+        return returnMap;
+    }
